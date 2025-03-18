@@ -1,1 +1,3 @@
-stories/*
+.firebase/*
+.firebaserc
+firebase.json
