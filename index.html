@@ -14,15 +14,25 @@
     <body>
         <main>
             <audio id="qt_audio" src="http://localhost:8888/files/test_audio.opus"></audio>
+            <audio id="qt_audio_ask" src="http://localhost:8888/files/audio_ask.opus"></audio>
+            <audio id="qt_audio_answer"></audio>
 
             <div id="qt_container">
-                <label id="qt_face">😐</label>
-                <img id="qt_image" src="http://localhost:8888/files/qt2.png">
+                <img id="qt_face" src="http://localhost:8888/files/qt/normal.png"></img>
+                <img id="qt_image" src="http://localhost:8888/files/qt3.png">
             </div>
 
             <div id="send_container">
-                <input type="text" id="question_input"></textarea>
-                <button id="send_button"></button>
+                <table id="send_button_table">
+                    <tr id="row1">
+                      <td><button class="send_button" id="send_button1">Choix 1</button></td>
+                      <td><button class="send_button" id="send_button2">Choix 2</button></td>
+                    </tr>
+                    <tr id="row1">
+                      <td><button class="send_button" id="send_button3">Choix 3</button></td>
+                      <td><button class="send_button" id="send_button4">Choix 4</button></td>
+                    </tr>
+                </table> 
             </div>
         </main>
     </body>

@@ -10,3 +10,11 @@ app.get('/', function(req, response) {
 app.get('/files/:name', function(req, response) {
     response.sendFile(req.params.name, { root: __dirname});
 });
+
+app.get('/files/audio/:name', function(req, response) {
+    response.sendFile(req.params.name, { root: __dirname + "/audio/"});
+});
+
+app.get('/files/qt/:name', function(req, response) {
+    response.sendFile(req.params.name, { root: __dirname + "/qt/"});
+});

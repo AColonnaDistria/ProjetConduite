@@ -5,9 +5,9 @@ body {
 #qt_face {
     position: absolute;
 
-    top: 160px;
-    left: 50%;
-    transform: translate(-50%, 0px);
+    top: 162px;
+    left: 118px;
+    width: 250px;
 
     font-size: 125px;
 }
@@ -43,6 +43,8 @@ body {
     top: 530px;
     left: 50%;
 
+    visibility: hidden;
+
     display: flex;
     flex-direction: row;
 
@@ -69,21 +71,9 @@ body {
     resize: none;
 }
 
-#send_button {
+.send_button {
     position: relative;
 
-    width: 30px;
-    height: 30px;
-
-    border-radius: 25px;
-
-    border: solid 1px;
-    border-color: #0078D4;
-
-    background-color: #0078D4;
-}
-
-#send_button:hover {
-    background-color: #33A6FF;
-    border-color: #33A6FF;
+    width: 250px;
+    height: 50px;
 }
