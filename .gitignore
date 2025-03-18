@@ -1,3 +1,4 @@
 .firebase/*
 .firebaserc
 firebase.json
+make_story/story/*

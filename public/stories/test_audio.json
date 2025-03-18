@@ -1,5 +1,26 @@
-[{"time": 24.728, "emotion":"colère"},
-{"time": 30.096, "emotion":"peur"},
-{"time": 42.814, "emotion":"joie"},
-{"time": 51.043, "emotion":"tristesse"},
-{"time": 69.550, "emotion":"joie"}]
+[
+    {
+      "time": 14.616,
+      "emotion": "dégoût"
+    },
+    {
+      "time": 22.584,
+      "emotion": "colère"
+    },
+    {
+      "time": 27.552,
+      "emotion": "peur"
+    },
+    {
+      "time": 37.775999999999996,
+      "emotion": "joie"
+    },
+    {
+      "time": 45.57599999999999,
+      "emotion": "tristesse"
+    },
+    {
+      "time": 61.199999999999996,
+      "emotion": "joie"
+    }
+  ]

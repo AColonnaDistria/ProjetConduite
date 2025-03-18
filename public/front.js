@@ -57,7 +57,7 @@
       mouthCloseDuration: 250 // duration of closed mouth state in ms
     },
     answer: {
-      delay: 1500,          // delay before showing answer options (ms)
+      delay: 0,          // delay before showing answer options (ms)
       resumeDelay: 2000     // delay after an answer is clicked (ms)
     }
   };
