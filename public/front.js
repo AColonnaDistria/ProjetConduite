@@ -6,6 +6,7 @@
       audio: document.getElementById("qt_audio"),
       audioAsk: document.getElementById("qt_audio_ask"),
       sendContainer: document.getElementById("send_container"),
+      storyChoiceTable: document.getElementById("story_choice_table"),
       sendButtons: [
         document.getElementById("send_button1"),
         document.getElementById("send_button2"),
@@ -15,7 +16,8 @@
       faceImage: document.getElementById("qt_face")
     },
     urls: {
-      schedule: "https://qt800-e3178.web.app/stories/test_audio.json",
+      schedule: "",
+      storyIndex: "https://qt800-e3178.web.app/stories/index.json",
       audioBase: "https://qt800-e3178.web.app/audio/",
       qtBase: "https://qt800-e3178.web.app/qt/"
     },
@@ -49,6 +51,7 @@
       "timide": "timide.opus", 
       "tristesse": "tristesse.opus"
     },
+    stories: [],
     // You can update these if you want different default face images.
     faceImages: {
       blinkingClosed: "normal.png",  // when blinking and mouth is closed
@@ -78,9 +81,7 @@
   let isPaused = false;
   let hasEnded = false;
 
-  // --- Fetch the Emotion Schedule ---
-  const dataSchedule = await fetch(CONFIG.urls.schedule);
-  const emotionSchedule = await dataSchedule.json();
+  let emotionSchedule = [];
 
   // --- Helper Functions ---
   // Fisher-Yates Shuffle to randomize arrays
@@ -167,11 +168,6 @@
 
   // Starts the clock and updates the face image based on the current state.
   function startClock() {
-    for (let emotion of emotionSchedule) {
-      emotion.consumed = false;
-    }
-    console.log(emotionSchedule);
-
     setInterval(() => {
       if (!isPaused) {
         if (!currentEmotion) {
@@ -244,6 +240,62 @@
     }
   }
 
+  async function downloadStories() {
+    const dataStoryIndex = await fetch(CONFIG.urls.storyIndex);
+    const stories = await dataStoryIndex.json();
+
+    for (let storyUrl of stories) {
+      const dataStory = await fetch(storyUrl);
+      const story = await dataStory.json();
+
+      CONFIG.stories.push(story);
+    }
+
+    console.log(CONFIG.stories);
+  // --- Fetch the Emotion Schedule ---
+  //const dataSchedule = await fetch(CONFIG.urls.schedule);
+  //const emotionSchedule = await dataSchedule.json();
+
+  story_choice_table.innerHTML = "";
+
+    for (let index in CONFIG.stories) {
+      console.log(index);
+      let story = CONFIG.stories[index];
+
+      let tableRow = document.createElement("tr");
+      let tableRowData = document.createElement("td");
+      let tableRowDataButton = document.createElement("button");
+      tableRowDataButton.classList.add("send_button");
+      tableRowDataButton.textContent = story.name;
+      tableRowDataButton.addEventListener("click", () => {
+        selectStory(index);
+        hasEnded = false;
+        resumeAudio();
+      });
+      tableRowDataButton.addEventListener("mouseover", () => {
+        let audio = new Audio(story.audio_name);
+        audio.play();
+      });
+
+      tableRowData.appendChild(tableRowDataButton);
+      tableRow.appendChild(tableRowData);
+
+      story_choice_table.appendChild(tableRow);
+    }
+  }
+
+  function selectStory(index) {
+    let story = CONFIG.stories[index];
+
+    emotionSchedule = story.emotions;
+
+    for (let emotion of emotionSchedule) {
+      emotion.consumed = false;
+    }
+
+    CONFIG.elements.audio.src = story.audio;
+  }
+
   // --- Initialization ---
 // Stop mouth movement when audio ends
 CONFIG.elements.audio.addEventListener("ended", () => {
@@ -252,10 +304,8 @@ CONFIG.elements.audio.addEventListener("ended", () => {
     console.log(emotionSchedule);
   });
 
+await downloadStories();
+selectStory(0); // first one by default
 startClock();
 
-CONFIG.elements.startButton.addEventListener("click", () => {
-  resumeAudio();
-})
-  
 })();

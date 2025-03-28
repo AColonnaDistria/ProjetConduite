@@ -1,0 +1,31 @@
+{
+  "name": "Petit Lou et la drôle de flaque",
+  "audio_name": "audio/audio_story/petit_lou_et_la_drole_de_flaque_name.mp3",
+  "audio": "audio/audio_story/petit_lou_et_la_drole_de_flaque.mp3",
+  "emotions": [
+    {
+      "time": 19.176,
+      "emotion": "confusion"
+    },
+    {
+      "time": 29.256,
+      "emotion": "colère"
+    },
+    {
+      "time": 35.184,
+      "emotion": "peur"
+    },
+    {
+      "time": 53.232,
+      "emotion": "joie"
+    },
+    {
+      "time": 62.28,
+      "emotion": "tristesse"
+    },
+    {
+      "time": 83.856,
+      "emotion": "joie"
+    }
+  ]
+}

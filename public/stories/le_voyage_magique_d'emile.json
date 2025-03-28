@@ -1,0 +1,35 @@
+{
+  "name": "Le Voyage Magique d'émile",
+  "audio_name": "audio/audio_story/le_voyage_magique_d'emile_name.mp3",
+  "audio": "audio/audio_story/le_voyage_magique_d'emile.mp3",
+  "emotions": [
+    {
+      "time": 14.544,
+      "emotion": "neutre"
+    },
+    {
+      "time": 24.024,
+      "emotion": "tristesse"
+    },
+    {
+      "time": 37.488,
+      "emotion": "peur"
+    },
+    {
+      "time": 48.480000000000004,
+      "emotion": "joie"
+    },
+    {
+      "time": 61.34400000000001,
+      "emotion": "confusion"
+    },
+    {
+      "time": 73.12800000000001,
+      "emotion": "colère"
+    },
+    {
+      "time": 83.25600000000001,
+      "emotion": "surprise"
+    }
+  ]
+}

@@ -1,9 +1,9 @@
 const fs = require('fs');
-const axios = require('axios');
-const ffmpeg = require('fluent-ffmpeg');
+const path = require('path');
 const readline = require('readline');
 const { promisify } = require('util');
-const openaiApiKey = process.env.OPENAI_API_KEY;
+const ffmpeg = require('fluent-ffmpeg');
+const gTTS = require('gtts');
 
 const readFileAsync = promisify(fs.readFile);
 const writeFileAsync = promisify(fs.writeFile);
@@ -54,7 +54,7 @@ async function extractEmotions(text) {
     while ((match = regex.exec(text)) !== null) {
         const emotion = match[1].trim();
         emotions.push(emotion);
-        
+
         const precedingText = text.substring(lastIndex, match.index).trim();
         if (precedingText) {
             parts.push({ text: precedingText, emotion });
@@ -66,32 +66,18 @@ async function extractEmotions(text) {
 }
 
 async function generateAudio(text, filePath) {
-    try {
-        const response = await axios.post(
-            'https://api.openai.com/v1/audio/speech',
-            {
-                model: "tts-1",
-                input: text,
-                voice: "alloy",
-                response_format: "mp3",
-                language: "fr"
-            },
-            {
-                headers: {
-                    'Authorization': `Bearer ${openaiApiKey}`,
-                    'Content-Type': 'application/json'
-                },
-                responseType: 'arraybuffer'
+    return new Promise((resolve, reject) => {
+        const gtts = new gTTS(text, 'fr');
+        gtts.save(filePath, function (err) {
+            if (err) {
+                console.error('Erreur TTS :', err);
+                reject(err);
+            } else {
+                console.log(`Audio sauvegardé : ${filePath}`);
+                resolve(filePath);
             }
-        );
-
-        await writeFileAsync(filePath, response.data);
-        console.log(`Audio saved: ${filePath}`);
-        return filePath;
-    } catch (error) {
-        console.error(`Audio generation error:`, error);
-        return null;
-    }
+        });
+    });
 }
 
 async function mergeAudioFiles(audioFiles, outputFile) {
@@ -140,7 +126,7 @@ async function processStory() {
         // Merge all audio parts
         const finalAudioPath = `public/audio/audio_story/${formattedName}.mp3`;
         await mergeAudioFiles(audioFiles, finalAudioPath);
-        console.log(`Final audio generated: ${finalAudioPath}`);
+        console.log(`Final audio généré : ${finalAudioPath}`);
 
         // Create JSON metadata
         const jsonData = {
@@ -152,7 +138,7 @@ async function processStory() {
 
         const jsonFilePath = `public/stories/${formattedName}.json`;
         await writeFileAsync(jsonFilePath, JSON.stringify(jsonData, null, 2));
-        console.log(`Metadata JSON created: ${jsonFilePath}`);
+        console.log(`Fichier JSON créé : ${jsonFilePath}`);
 
         // Update story index
         const indexPath = 'public/stories/index.json';
@@ -162,14 +148,14 @@ async function processStory() {
             const existing = await readFileAsync(indexPath, 'utf8');
             index = JSON.parse(existing);
         } catch {
-            console.log('Creating new index file...');
+            console.log('Création d’un nouveau fichier index...');
         }
 
         index.push(`stories/${formattedName}.json`);
         await writeFileAsync(indexPath, JSON.stringify(index, null, 2));
-        console.log(`Index updated: ${indexPath}`);
+        console.log(`Index mis à jour : ${indexPath}`);
     } catch (error) {
-        console.error('Story processing error:', error);
+        console.error('Erreur lors du traitement de l’histoire :', error);
     }
 }
 

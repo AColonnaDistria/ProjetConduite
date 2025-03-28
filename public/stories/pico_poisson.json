@@ -1,0 +1,31 @@
+{
+  "name": "Pico poisson",
+  "audio_name": "audio/audio_story/pico_poisson_name.mp3",
+  "audio": "audio/audio_story/pico_poisson.mp3",
+  "emotions": [
+    {
+      "time": 14.352,
+      "emotion": "tristesse"
+    },
+    {
+      "time": 26.04,
+      "emotion": "peur"
+    },
+    {
+      "time": 40.944,
+      "emotion": "joie"
+    },
+    {
+      "time": 60.648,
+      "emotion": "confusion"
+    },
+    {
+      "time": 74.83200000000001,
+      "emotion": "colère"
+    },
+    {
+      "time": 88.176,
+      "emotion": "surprise"
+    }
+  ]
+}
