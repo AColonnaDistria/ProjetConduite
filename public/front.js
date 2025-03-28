@@ -25,21 +25,29 @@
       "joie", "neutre", "peur", "surprise", "timide", "tristesse"
     ],
     emotionImageMap: {
-      "colère": "colère.png",
+      "affection": "affection.png",
+      "colère": "colère.png", 
+      "confusion": "confusion.png", 
+      "cri": "cri.png", 
+      "embarassement": "embarassement.png", 
+      "joie": "joie.png", 
+      "neutre": "neutre.png",
       "peur": "peur.png",
-      "joie": "joie.png",
+      "surprise": "surprise.png", 
+      "timide": "timide.png", 
       "tristesse": "tristesse.png"
     },
     emotionAudioMap: {
       "affection": "affection.opus",
-      "colère": "colère.opus",
-      "confusion": "confusion.opus",
-      "embarassement": "embarassement.opus",
-      "joie": "joie.opus",
+      "colère": "colère.opus", 
+      "confusion": "confusion.opus", 
+      "cri": "cri.opus", 
+      "embarassement": "embarassement.opus", 
+      "joie": "joie.opus", 
       "neutre": "neutre.opus",
       "peur": "peur.opus",
-      "surprise": "surprise.opus",
-      "timide": "timide.opus",
+      "surprise": "surprise.opus", 
+      "timide": "timide.opus", 
       "tristesse": "tristesse.opus"
     },
     // You can update these if you want different default face images.
@@ -50,7 +58,7 @@
       normalOpen: "normal3.png"        // when not blinking and mouth is open
     },
     intervals: {
-      clock: 100,           // update clock every 100ms
+      clock: 100,
       blink: 3000,          // blink every 3000ms
       blinkDuration: 200,     // blink lasts for 200ms
       mouthClose: 500,      // close mouth every 500ms briefly
@@ -69,8 +77,7 @@
   let keepMouthShut = true;
   let currentEmotion = null;
   let isPaused = false;
-  let clock = 0;
-  let pauseTime = 0;
+  let hasEnded = false;
 
   // --- Fetch the Emotion Schedule ---
   const dataSchedule = await fetch(CONFIG.urls.schedule);
@@ -87,33 +94,34 @@
 
   // Displays the emotion and schedules answer options
   function displayEmotion(emotion) {
+    console.log("test");
+    console.log(emotion);
     if (CONFIG.emotionImageMap[emotion]) {
       currentEmotion = emotion;
-      setTimeout(() => {
-        pauseAudio();
+      CONFIG.elements.faceImage.src = `${CONFIG.urls.qtBase}${CONFIG.emotionImageMap[currentEmotion]}`;
+      pauseAudio();
 
-        CONFIG.elements.audioAsk.currentTime = 0;
-        CONFIG.elements.audioAsk.play();
+      CONFIG.elements.audioAsk.currentTime = 0;
+      CONFIG.elements.audioAsk.play();
 
-        // Prepare answer options with one correct answer at a random index.
-        const answerOptions = new Array(4).fill(null);
-        const correctIndex = Math.floor(Math.random() * 4);
-        answerOptions[correctIndex] = emotion;
+      // Prepare answer options with one correct answer at a random index.
+      const answerOptions = new Array(4).fill(null);
+      const correctIndex = Math.floor(Math.random() * 4);
+      answerOptions[correctIndex] = emotion;
 
-        // Create a list of distractors ensuring they aren’t the correct answer.
-        const distractors = CONFIG.emotions.filter(e => e !== emotion);
-        shuffleArray(distractors);
+      // Create a list of distractors ensuring they aren’t the correct answer.
+      const distractors = CONFIG.emotions.filter(e => e !== emotion);
+      shuffleArray(distractors);
 
-        let distractorIndex = 0;
-        for (let i = 0; i < answerOptions.length; i++) {
-          if (i !== correctIndex) {
-            answerOptions[i] = distractors[distractorIndex];
-            distractorIndex++;
-          }
+      let distractorIndex = 0;
+      for (let i = 0; i < answerOptions.length; i++) {
+        if (i !== correctIndex) {
+          answerOptions[i] = distractors[distractorIndex];
+          distractorIndex++;
         }
+      }
 
-        showAnswerOptions(answerOptions);
-      }, CONFIG.answer.delay);
+      showAnswerOptions(answerOptions);
     }
   }
 
@@ -161,12 +169,14 @@
 
   // Starts the clock and updates the face image based on the current state.
   function startClock() {
+    for (let emotion of emotionSchedule) {
+      emotion.consumed = false;
+    }
+    console.log(emotionSchedule);
+
     setInterval(() => {
-      clock += CONFIG.intervals.clock;
       if (!isPaused) {
-        if (currentEmotion) {
-          CONFIG.elements.faceImage.src = `${CONFIG.urls.qtBase}${CONFIG.emotionImageMap[currentEmotion]}`;
-        } else {
+        if (!currentEmotion) {
           if (blinking) {
             CONFIG.elements.faceImage.src = (closedMouth || keepMouthShut)
               ? `${CONFIG.urls.qtBase}${CONFIG.faceImages.blinkingClosed}`
@@ -201,9 +211,10 @@
   function scheduleEmotions() {
     clearScheduledEmotions();
     emotionSchedule.forEach(timepoint => {
-      const delay = timepoint.time * 1000 - pauseTime;
-      if (delay > 0) {
+      const delay = (timepoint.time - CONFIG.elements.audio.currentTime) * 1000;
+      if (!timepoint.consumed && delay > 0) {
         const timeoutId = setTimeout(() => {
+          timepoint.consumed = true;
           displayEmotion(timepoint.emotion);
         }, delay);
         timeouts.push(timeoutId);
@@ -222,23 +233,26 @@
     CONFIG.elements.audio.pause();
     isPaused = true;
     keepMouthShut = true;
-    pauseTime = clock;
     clearScheduledEmotions();
   }
 
   // Resumes the main audio and re-schedules the remaining emotion events.
   function resumeAudio() {
-    CONFIG.elements.audio.play();
     isPaused = false;
-    keepMouthShut = false;
-    scheduleEmotions();
+    if (!hasEnded) {
+      keepMouthShut = false;
+      CONFIG.elements.audio.play();
+      scheduleEmotions();
+    }
   }
 
   // --- Initialization ---
 // Stop mouth movement when audio ends
 CONFIG.elements.audio.addEventListener("ended", () => {
     keepMouthShut = true;  // Ensure the mouth remains open (normal state)
-});
+    hasEnded = true;
+    console.log(emotionSchedule);
+  });
 
 startClock();
 
