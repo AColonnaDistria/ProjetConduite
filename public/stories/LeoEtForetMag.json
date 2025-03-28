@@ -1,0 +1,33 @@
+
+  [
+    {"time": 0.24, "emotion": "joie"},
+    {"time": 0.26, "emotion": "joie"},
+    {"time": 0.43, "emotion": "surprise"},
+    {"time": 0.45, "emotion": "surprise"},
+    {"time": 0.56, "emotion": "joie"},
+    {"time": 1.00, "emotion": "joie"},
+    {"time": 1.05, "emotion": "joie"},
+    {"time": 1.24, "emotion": "embaraassement"}, 
+    {"time": 1.29, "emotion": "confusion"},
+    {"time": 1.33, "emotion": "confusion"},
+    {"time": 1.43, "emotion": "timide"},
+    {"time": 1.46, "emotion": "joie"},
+    {"time": 1.55, "emotion": "joie"},
+    {"time": 2.07, "emotion": "joie"},
+    {"time": 2.09, "emotion": "timide"},
+    {"time": 2.10, "emotion": "timide"},
+    {"time": 2.22, "emotion": "surprise"},
+    {"time": 2.25, "emotion": "surprise"},
+    {"time": 2.31, "emotion": "joie"},
+    {"time": 2.32, "emotion": "joie"},
+    {"time": 2.40, "emotion": "peur"},
+    {"time": 2.45, "emotion": "tristesse"},
+    {"time": 2.48, "emotion": "peur"},
+    {"time": 2.51, "emotion": "peur"},
+    {"time": 3.03, "emotion": "peur"},
+    {"time": 3.12, "emotion": "joie"},
+    {"time": 3.24, "emotion": "joie"},
+    {"time": 3.35, "emotion": "joie"}
+  ]
+  
+  

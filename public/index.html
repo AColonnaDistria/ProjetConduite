@@ -1,40 +1,37 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF8"/><!DOCTYPE html>
-        <html>
-            <head>
-                <meta charset="UTF8"/>
-                <link rel="stylesheet" href="https://qt800-e3178.web.app/stylesheet.css"/>
-                <script defer src="https://qt800-e3178.web.app/front.js" type="module"></script>
-            </head>
-        </html>
-    </head>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="stylesheet.css"/>
+    <script defer src="front.js" type="module"></script>
+  </head>
 
-    <body>
-        <main>
-            <audio id="qt_audio" src="https://qt800-e3178.web.app/audio/test_audio.mp3"></audio>
-            <audio id="qt_audio_ask" src="https://qt800-e3178.web.app/audio/audio_ask.opus"></audio>
-            <audio id="qt_audio_answer"></audio>
-            <button id="start_button">Start</button>
+  <body>
 
-            <div id="qt_container">
-                <img id="qt_face" src="https://qt800-e3178.web.app/qt/normal.png"></img>
-                <img id="qt_image" src="https://qt800-e3178.web.app/qt/qt.png">
-            </div>
+    <main>
+      <audio id="qt_audio" src="/audio/story_audio.mp3"></audio>
+      <audio id="qt_audio_ask" src="audio/audio_ask.opus"></audio>
+      <audio id="qt_audio_answer"></audio>
+      <button id="start_button">Start</button>
 
-            <div id="send_container">
-                <table id="send_button_table">
-                    <tr id="row1">
-                      <td><button class="send_button" id="send_button1">Choix 1</button></td>
-                      <td><button class="send_button" id="send_button2">Choix 2</button></td>
-                    </tr>
-                    <tr id="row2">
-                      <td><button class="send_button" id="send_button3">Choix 3</button></td>
-                      <td><button class="send_button" id="send_button4">Choix 4</button></td>
-                    </tr>
-                </table> 
-            </div>
-        </main>
-    </body>
+      <div id="qt_container">
+        <img id="qt_face" src="qt/normal.png" alt="QT Robot Face"/>
+        <img id="qt_image" src="qt/qt.png" alt="QT Robot"/>
+      </div>
+
+      <div id="send_container">
+        <table id="send_button_table">
+          <tr id="row1">
+            <td><button class="send_button" id="send_button1">Choix 1</button></td>
+            <td><button class="send_button" id="send_button2">Choix 2</button></td>
+          </tr>
+          <tr id="row2">
+            <td><button class="send_button" id="send_button3">Choix 3</button></td>
+            <td><button class="send_button" id="send_button4">Choix 4</button></td>
+          </tr>
+        </table> 
+      </div>
+    </main>
+  </body>
 </html>

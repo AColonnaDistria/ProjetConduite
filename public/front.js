@@ -5,6 +5,7 @@
       startButton: document.getElementById("start_button"),
       audio: document.getElementById("qt_audio"),
       audioAsk: document.getElementById("qt_audio_ask"),
+      audioAnswer: document.getElementById("qt_audio_answer"),
       sendContainer: document.getElementById("send_container"),
       sendButtons: [
         document.getElementById("send_button1"),
@@ -15,75 +16,78 @@
       faceImage: document.getElementById("qt_face")
     },
     urls: {
-      schedule: "https://qt800-e3178.web.app/stories/test_audio.json",
-      audioBase: "https://qt800-e3178.web.app/audio/",
-      qtBase: "https://qt800-e3178.web.app/qt/"
+      schedule: "/stories/LeoEtForetMag.json",
+      audioBase: "/audio/",
+      qtBase: "/qt/",
+      storyAudio: "/audio/story_audio.mp3",
     },
+    backgroundImageSchedule: [
+      { time: 0, image: "images/im1.png" },
+      { time: 33, image: "images/im2.png" },  // 33 seconds
+      { time: 60, image: "images/im3.png" },  // 1 minute
+      { time: 78, image: "images/im4.png" },  // 1 minute 18 seconds
+      { time: 110, image: "images/im5.png" },
+      { time: 140, image: "images/im6.png" },
+      { time: 185, image: "images/im7.png" },
+      { time: 218, image: "images/im8.png" },
+    ],
     emotions: [
       "affection", "colère", "confusion", "embarassement",
       "joie", "neutre", "peur", "surprise", "timide", "tristesse"
     ],
     emotionImageMap: {
-      "affection": "affection.png",
-      "colère": "colère.png", 
-      "confusion": "confusion.png", 
-      "cri": "cri.png", 
-      "embarassement": "embarassement.png", 
-      "joie": "joie.png", 
-      "neutre": "neutre.png",
+      "colère": "colère.png",
       "peur": "peur.png",
-      "surprise": "surprise.png", 
-      "timide": "timide.png", 
+      "joie": "joie.png",
       "tristesse": "tristesse.png"
     },
     emotionAudioMap: {
       "affection": "affection.opus",
-      "colère": "colère.opus", 
-      "confusion": "confusion.opus", 
-      "cri": "cri.opus", 
-      "embarassement": "embarassement.opus", 
-      "joie": "joie.opus", 
+      "colère": "colère.opus",
+      "confusion": "confusion.opus",
+      "embarassement": "embarassement.opus",
+      "joie": "joie.opus",
       "neutre": "neutre.opus",
       "peur": "peur.opus",
-      "surprise": "surprise.opus", 
-      "timide": "timide.opus", 
+      "surprise": "surprise.opus",
+      "timide": "timide.opus",
       "tristesse": "tristesse.opus"
     },
-    // You can update these if you want different default face images.
     faceImages: {
-      blinkingClosed: "normal.png",  // when blinking and mouth is closed
-      blinkingOpen: "normal4.png",     // when blinking and mouth is open
-      normalClosed: "normal2.png",     // when not blinking but mouth is closed
-      normalOpen: "normal3.png"        // when not blinking and mouth is open
+      blinkingClosed: "normal.png",
+      blinkingOpen: "normal4.png",
+      normalClosed: "normal2.png",
+      normalOpen: "normal3.png"
     },
     intervals: {
       clock: 100,
-      blink: 3000,          // blink every 3000ms
-      blinkDuration: 200,     // blink lasts for 200ms
-      mouthClose: 500,      // close mouth every 500ms briefly
-      mouthCloseDuration: 250 // duration of closed mouth state in ms
+      blink: 3000,
+      blinkDuration: 200,
+      mouthClose: 500,
+      mouthCloseDuration: 250
     },
     answer: {
-      delay: 0,          // delay before showing answer options (ms)
-      resumeDelay: 2000     // delay after an answer is clicked (ms)
+      delay: 1500,
+      resumeDelay: 2000
     }
   };
 
   // --- State Variables ---
+  let storyAudio = new Audio(CONFIG.urls.storyAudio);
   let timeouts = [];
   let blinking = false;
   let closedMouth = false;
   let keepMouthShut = true;
   let currentEmotion = null;
   let isPaused = false;
-  let hasEnded = false;
+  let clock = 0;
+  let pauseTime = 0;
 
   // --- Fetch the Emotion Schedule ---
   const dataSchedule = await fetch(CONFIG.urls.schedule);
   const emotionSchedule = await dataSchedule.json();
 
   // --- Helper Functions ---
-  // Fisher-Yates Shuffle to randomize arrays
   function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -91,128 +95,34 @@
     }
   }
 
-  // Displays the emotion and schedules answer options
-  function displayEmotion(emotion) {
-    console.log("test");
-    console.log(emotion);
-    if (CONFIG.emotionImageMap[emotion]) {
-      currentEmotion = emotion;
-      CONFIG.elements.faceImage.src = `${CONFIG.urls.qtBase}${CONFIG.emotionImageMap[currentEmotion]}`;
-      pauseAudio();
+  // Function to change background based on the audio time
+  function changeBackground(imageUrl) {
 
-      CONFIG.elements.audioAsk.currentTime = 0;
-      CONFIG.elements.audioAsk.play();
-
-      // Prepare answer options with one correct answer at a random index.
-      const answerOptions = new Array(4).fill(null);
-      const correctIndex = Math.floor(Math.random() * 4);
-      answerOptions[correctIndex] = emotion;
-
-      // Create a list of distractors ensuring they aren’t the correct answer.
-      const distractors = CONFIG.emotions.filter(e => e !== emotion);
-      shuffleArray(distractors);
-
-      let distractorIndex = 0;
-      for (let i = 0; i < answerOptions.length; i++) {
-        if (i !== correctIndex) {
-          answerOptions[i] = distractors[distractorIndex];
-          distractorIndex++;
-        }
-      }
-
-      showAnswerOptions(answerOptions);
-    }
+    document.body.style.backgroundImage = `url(${imageUrl})`;
+    document.body.style.backgroundSize = "cover"; // Ensures the image covers the entire screen
+    document.body.style.backgroundPosition = "center"; // Centers the image
+    document.body.style.transition = "background-size 2s ease-in-out"; // Adds a smooth transition for zooming
   }
 
-  // Hides the answer options container.
-  function hideAnswerOptions() {
-    CONFIG.elements.sendContainer.style.display = "none";
-    CONFIG.elements.sendContainer.style.visibility = "hidden";
-  }
+  // Check for background change based on audio time
+  function checkBackgroundChange() {
+    const currentTime = storyAudio.currentTime;
 
-  // Displays answer options and attaches event handlers.
-  function showAnswerOptions(options) {
-    CONFIG.elements.sendButtons.forEach((button, index) => {
-      const option = options[index];
-      if (!option) {
-        button.style.visibility = "hidden";
-      } else {
-        button.style.visibility = "visible";
-        button.textContent = option;
-        // Play the corresponding emotion audio on hover.
-        button.onmouseover = () => {
-          const audioAnswer = new Audio(`${CONFIG.urls.audioBase}${CONFIG.emotionAudioMap[option]}`);
-          audioAnswer.play();
-        };
-        // On click, play success or failure sound and resume the audio.
-        button.onclick = () => {
-          if (option === currentEmotion) {
-            const bravo = new Audio(`${CONFIG.urls.audioBase}bravo.opus`);
-            bravo.play();
-          } else {
-            const perdu = new Audio(`${CONFIG.urls.audioBase}perdu.opus`);
-            perdu.play();
-          }
-          setTimeout(() => {
-            currentEmotion = null;
-            hideAnswerOptions();
-            resumeAudio();
-          }, CONFIG.answer.resumeDelay);
-        };
+    CONFIG.backgroundImageSchedule.forEach(change => {
+      if (currentTime >= change.time && !change.changed) {
+        changeBackground(change.image); // Change the background
+        change.changed = true; // Mark that the background has been changed for this time
       }
     });
-    CONFIG.elements.sendContainer.style.display = "flex";
-    CONFIG.elements.sendContainer.style.visibility = "visible";
   }
 
-  // Starts the clock and updates the face image based on the current state.
-  function startClock() {
-    for (let emotion of emotionSchedule) {
-      emotion.consumed = false;
-    }
-    console.log(emotionSchedule);
-
-    setInterval(() => {
-      if (!isPaused) {
-        if (!currentEmotion) {
-          if (blinking) {
-            CONFIG.elements.faceImage.src = (closedMouth || keepMouthShut)
-              ? `${CONFIG.urls.qtBase}${CONFIG.faceImages.blinkingClosed}`
-              : `${CONFIG.urls.qtBase}${CONFIG.faceImages.blinkingOpen}`;
-          } else {
-            CONFIG.elements.faceImage.src = (closedMouth || keepMouthShut)
-              ? `${CONFIG.urls.qtBase}${CONFIG.faceImages.normalClosed}`
-              : `${CONFIG.urls.qtBase}${CONFIG.faceImages.normalOpen}`;
-          }
-        }
-      }
-    }, CONFIG.intervals.clock);
-
-    // Blink every blink interval.
-    setInterval(() => {
-      blinking = true;
-      setTimeout(() => {
-        blinking = false;
-      }, CONFIG.intervals.blinkDuration);
-    }, CONFIG.intervals.blink);
-
-    // Briefly close the mouth every mouthClose interval.
-    setInterval(() => {
-      closedMouth = true;
-      setTimeout(() => {
-        closedMouth = false;
-      }, CONFIG.intervals.mouthCloseDuration);
-    }, CONFIG.intervals.mouthClose);
-  }
-
-  // Schedules emotion cues based on the fetched schedule.
+  // --- Emotion Scheduling Functions ---
   function scheduleEmotions() {
     clearScheduledEmotions();
     emotionSchedule.forEach(timepoint => {
-      const delay = (timepoint.time - CONFIG.elements.audio.currentTime) * 1000;
-      if (!timepoint.consumed && delay > 0) {
+      const delay = (timepoint.time - pauseTime) * 1000;
+      if (delay > 0) {
         const timeoutId = setTimeout(() => {
-          timepoint.consumed = true;
           displayEmotion(timepoint.emotion);
         }, delay);
         timeouts.push(timeoutId);
@@ -220,42 +130,46 @@
     });
   }
 
-  // Clears all scheduled emotion timeouts.
-  function clearScheduledEmotions() {
-    timeouts.forEach(timeoutId => clearTimeout(timeoutId));
-    timeouts = [];
-  }
-
-  // Pauses the main audio and cancels scheduled emotion events.
   function pauseAudio() {
     CONFIG.elements.audio.pause();
     isPaused = true;
     keepMouthShut = true;
+    pauseTime = clock;
     clearScheduledEmotions();
   }
 
-  // Resumes the main audio and re-schedules the remaining emotion events.
   function resumeAudio() {
+    CONFIG.elements.audio.play();
     isPaused = false;
-    if (!hasEnded) {
-      keepMouthShut = false;
-      CONFIG.elements.audio.play();
-      scheduleEmotions();
-    }
+    keepMouthShut = false;
+    scheduleEmotions();
   }
 
-  // --- Initialization ---
-// Stop mouth movement when audio ends
-CONFIG.elements.audio.addEventListener("ended", () => {
-    keepMouthShut = true;  // Ensure the mouth remains open (normal state)
-    hasEnded = true;
-    console.log(emotionSchedule);
+  // --- Start clock function ---
+  function startClock() {
+    setInterval(() => {
+      clock++;
+    }, 1000); // Increment clock every second
+  }
+
+  // Set interval to check the background change while the audio is playing
+  setInterval(() => {
+    if (!isPaused) {
+      checkBackgroundChange(); // Check and change background based on audio time
+    }
+  }, 1000); // Check every second
+
+  CONFIG.elements.startButton.addEventListener("click", () => {
+    storyAudio.play().then(() => {
+      console.log("Story audio is playing!");
+      storyAudio.addEventListener("ended", () => {
+        console.log("Story audio has finished, now moving to the questions.");
+        resumeAudio();
+      });
+    }).catch((error) => {
+      console.log("Error playing story audio:", error);
+    });
   });
 
-startClock();
-
-CONFIG.elements.startButton.addEventListener("click", () => {
-  resumeAudio();
-})
-  
+  startClock();
 })();

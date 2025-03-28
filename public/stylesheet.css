@@ -1,6 +1,15 @@
 body {
-    margin: 0px;
-}
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background-color: #000; /* Fallback color */
+    background-size: 200%; /* Default zoomed-in effect */
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    transition: background-size 1s ease-in-out; /* Smooth transition for zooming */
+  }
+
 
 #qt_face {
     position: absolute;
@@ -28,6 +37,7 @@ body {
     transform: translate(-50%, 0px);
 
     box-shadow: 1px 1px 1px #bcbcbc;
+    z-index: 2;
 }
 
 #qt_image {
@@ -52,6 +62,7 @@ body {
     height: fit-content;
 
     transform: translate(-50%, 0px);
+    z-index: 2;
 }
 
 #question_input {
