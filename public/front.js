@@ -5,7 +5,6 @@
       startButton: document.getElementById("start_button"),
       audio: document.getElementById("qt_audio"),
       audioAsk: document.getElementById("qt_audio_ask"),
-      audioAnswer: document.getElementById("qt_audio_answer"),
       sendContainer: document.getElementById("send_container"),
       sendButtons: [
         document.getElementById("send_button1"),
@@ -142,19 +141,18 @@
         button.textContent = option;
         // Play the corresponding emotion audio on hover.
         button.onmouseover = () => {
-          CONFIG.elements.audioAnswer.src = `${CONFIG.urls.audioBase}${CONFIG.emotionAudioMap[option]}`;
-          CONFIG.elements.audioAnswer.currentTime = 0;
-          CONFIG.elements.audioAnswer.play();
+          const audioAnswer = new Audio(`${CONFIG.urls.audioBase}${CONFIG.emotionAudioMap[option]}`);
+          audioAnswer.play();
         };
         // On click, play success or failure sound and resume the audio.
         button.onclick = () => {
           if (option === currentEmotion) {
-            CONFIG.elements.audioAnswer.src = `${CONFIG.urls.audioBase}bravo.opus`;
+            const bravo = new Audio(`${CONFIG.urls.audioBase}bravo.opus`);
+            bravo.play();
           } else {
-            CONFIG.elements.audioAnswer.src = `${CONFIG.urls.audioBase}perdu.opus`;
+            const perdu = new Audio(`${CONFIG.urls.audioBase}perdu.opus`);
+            perdu.play();
           }
-          CONFIG.elements.audioAnswer.currentTime = 0;
-          CONFIG.elements.audioAnswer.play();
           setTimeout(() => {
             currentEmotion = null;
             hideAnswerOptions();
