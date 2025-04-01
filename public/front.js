@@ -17,9 +17,9 @@
     },
     urls: {
       schedule: "",
-      storyIndex: "https://qt800-e3178.web.app/stories/index.json",
-      audioBase: "https://qt800-e3178.web.app/audio/",
-      qtBase: "https://qt800-e3178.web.app/qt/"
+      storyIndex: "/stories/index.json",
+      audioBase: "/audio/",
+      qtBase: "/qt/"
     },
     emotions: [
       "affection", "colère", "confusion", "embarassement",
