@@ -1,0 +1,47 @@
+
+{
+    
+    "name": "Leo et le foret magique",
+    "audio_name": "audio/audio_story/maxetleo.mp3",
+    "audio": "audio/audio_story/maxetleo.mp3",
+    "emotions": [
+     
+
+    {"time": 26, "emotion": "joie"},
+
+    {"time": 45, "emotion": "surprise"},
+
+    {"time": 65, "emotion": "joie"},
+    {"time": 84, "emotion": "embaraassement"}, 
+
+    {"time": 93, "emotion": "confusion"},
+    {"time": 103 , "emotion": "timide"},
+
+
+    {"time": 165, "emotion": "tristesse"},
+
+    {"time": 183 , "emotion": "peur"},
+
+    {"time": 204 , "emotion": "joie"}
+
+],
+
+
+
+    "images" : 
+
+        [
+            { "time": 0, "image": "images/im1.png" },
+            { "time": 33, "image": "images/im2.png" },  
+            { "time": 60, "image": "images/im3.png" },  
+            { "time": 78, "image": "images/im4.png" },  
+            { "time": 110, "image": "images/im5.png" },
+            { "time": 140, "image": "images/im6.png" },
+            { "time": 185, "image": "images/im7.png" },
+            { "time": 218, "image": "images/im8.png" }
+          ]
+
+
+  
+}
+  

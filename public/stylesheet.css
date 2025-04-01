@@ -85,3 +85,15 @@ body {
     width: 250px;
     height: 50px;
 }
+
+#image_display {
+    width: 350px;  /* Adjust as needed */
+    height: auto;  /* Maintain aspect ratio */
+    border: 4px solid black;
+    border-radius: 50%;
+    position: absolute;
+    right: 20px;  /* Distance from the right edge */
+    top: 50%;  /* Center vertically */
+    transform: translateY(-50%);  /* Perfect vertical centering */
+  }
+  

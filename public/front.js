@@ -2,6 +2,7 @@
   // --- Configuration Object ---
   const CONFIG = {
     elements: {
+      imageDisplay: document.getElementById("image_display"),
       startButton: document.getElementById("start_button"),
       audio: document.getElementById("qt_audio"),
       audioAsk: document.getElementById("qt_audio_ask"),
@@ -17,9 +18,9 @@
     },
     urls: {
       schedule: "",
-      storyIndex: "https://qt800-e3178.web.app/stories/index.json",
-      audioBase: "https://qt800-e3178.web.app/audio/",
-      qtBase: "https://qt800-e3178.web.app/qt/"
+      storyIndex: "/stories/index.json",
+      audioBase: "/audio/",
+      qtBase: "/qt/"
     },
     emotions: [
       "affection", "colère", "confusion", "embarassement",
@@ -82,6 +83,9 @@
   let hasEnded = false;
 
   let emotionSchedule = [];
+
+  let imageSchedule = [];
+  let imageTimeouts = [];
 
   // --- Helper Functions ---
   // Fisher-Yates Shuffle to randomize arrays
@@ -288,13 +292,71 @@
     let story = CONFIG.stories[index];
 
     emotionSchedule = story.emotions;
-
     for (let emotion of emotionSchedule) {
-      emotion.consumed = false;
+        emotion.consumed = false;
     }
 
+    imageSchedule = story.images || [];
+    for (let image of imageSchedule) {
+        image.consumed = false;
+    }
+
+    // Always start with "images/im1.png"
+    CONFIG.elements.imageDisplay.src = "images/im1.png";
+
     CONFIG.elements.audio.src = story.audio;
+
+    scheduleImages();
+}
+
+
+  function scheduleImages() {
+    clearScheduledImages();
+
+    if (!imageSchedule || imageSchedule.length == 0) return;
+    imageSchedule.forEach(timepoint => {
+      const delay = ( timepoint.time - CONFIG.elements.audio.currentTime) *1000;
+      if (!timepoint.consumed && delay > 0 ) {
+        const timeoutId = setTimeout (() => {
+          timepoint.consumed = true;
+          CONFIG.elements.imageDisplay.src = timepoint.image;
+        },delay);
+        imageTimeouts.push(timeoutId);
+        }
+      });
+    }
+  
+  function clearScheduledImages(){
+    imageTimeouts.forEach(timeoutId => clearTimeout(timeoutId));
+    imageTimeouts = [];
   }
+
+  function pauseAudio(){
+    CONFIG.elements.audio.pause();
+    isPaused = true;
+    keepMouthShut = true;
+    clearScheduledEmotions();
+    clearScheduledImages();
+
+  }
+
+  function resumeAudio(){
+    isPaused = false;
+    if (!hasEnded) {
+      keepMouthShut = false;
+      CONFIG.elements.audio.play();
+      scheduleEmotions(); 
+      scheduleImages();
+    }
+  }
+
+
+  CONFIG.elements.audio.addEventListener("timeupdate", () => {
+
+    if (!isPaused && !hasEnded){
+      scheduleImages();
+    }
+  })
 
   // --- Initialization ---
 // Stop mouth movement when audio ends

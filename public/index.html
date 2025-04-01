@@ -5,16 +5,18 @@
         <html>
             <head>
                 <meta charset="UTF8"/>
-                <link rel="stylesheet" href="https://qt800-e3178.web.app/stylesheet.css"/>
-                <script defer src="https://qt800-e3178.web.app/front.js" type="module"></script>
+                <link rel="stylesheet" href="stylesheet.css"/>
+                <script defer src="front.js" type="module"></script>
             </head>
         </html>
     </head>
 
     <body>
         <main>
-            <audio id="qt_audio" src="https://qt800-e3178.web.app/audio/test_audio.mp3"></audio>
-            <audio id="qt_audio_ask" src="https://qt800-e3178.web.app/audio/audio_ask.opus"></audio>
+            <img id="image_display" src="images/im1.png" alt="Story Image">
+
+            <audio id="qt_audio" src="/audio/story_audio.mp3"></audio>
+            <audio id="qt_audio_ask" src="audio/audio_ask.opus"></audio>
             <audio id="qt_audio_answer"></audio>
 
             <table id="story_choice_table">
@@ -38,8 +40,8 @@
             </table>
 
             <div id="qt_container">
-                <img id="qt_face" src="https://qt800-e3178.web.app/qt/normal.png"></img>
-                <img id="qt_image" src="https://qt800-e3178.web.app/qt/qt.png">
+                <img id="qt_face" src="qt/normal.png"></img>
+                <img id="qt_image" src="qt/qt.png">
             </div>
 
             <div id="send_container">
