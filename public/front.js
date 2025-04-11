@@ -5,14 +5,7 @@
       startButton: document.getElementById("start_button"),
       audio: document.getElementById("qt_audio"),
       audioAsk: document.getElementById("qt_audio_ask"),
-      sendContainer: document.getElementById("send_container"),
       storyChoiceTable: document.getElementById("story_choice_table"),
-      sendButtons: [
-        document.getElementById("send_button1"),
-        document.getElementById("send_button2"),
-        document.getElementById("send_button3"),
-        document.getElementById("send_button4")
-      ],
       faceImage: document.getElementById("qt_face")
     },
     urls: {
@@ -83,15 +76,6 @@
 
   let emotionSchedule = [];
 
-  // --- Helper Functions ---
-  // Fisher-Yates Shuffle to randomize arrays
-  function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-  }
-
   // Displays the emotion and schedules answer options
   function displayEmotion(emotion) {
     console.log("test");
@@ -103,23 +87,6 @@
 
       CONFIG.elements.audioAsk.currentTime = 0;
       CONFIG.elements.audioAsk.play();
-
-      // Prepare answer options with one correct answer at a random index.
-      const answerOptions = new Array(4).fill(null);
-      const correctIndex = Math.floor(Math.random() * 4);
-      answerOptions[correctIndex] = emotion;
-
-      // Create a list of distractors ensuring they aren’t the correct answer.
-      const distractors = CONFIG.emotions.filter(e => e !== emotion);
-      shuffleArray(distractors);
-
-      let distractorIndex = 0;
-      for (let i = 0; i < answerOptions.length; i++) {
-        if (i !== correctIndex) {
-          answerOptions[i] = distractors[distractorIndex];
-          distractorIndex++;
-        }
-      }
     }
   }
   
