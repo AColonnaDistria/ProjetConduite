@@ -4,7 +4,6 @@
     elements: {
       startButton: document.getElementById("start_button"),
       audio: document.getElementById("qt_audio"),
-      audioAsk: document.getElementById("qt_audio_ask"),
       storyChoiceTable: document.getElementById("story_choice_table"),
       faceImage: document.getElementById("qt_face")
     },
@@ -57,12 +56,9 @@
       blink: 3000,          // blink every 3000ms
       blinkDuration: 200,     // blink lasts for 200ms
       mouthClose: 500,      // close mouth every 500ms briefly
-      mouthCloseDuration: 250 // duration of closed mouth state in ms
+      mouthCloseDuration: 250, // duration of closed mouth state in ms
+      emotionDelay: 1000
     },
-    answer: {
-      delay: 0,          // delay before showing answer options (ms)
-      resumeDelay: 2000     // delay after an answer is clicked (ms)
-    }
   };
 
   // --- State Variables ---
@@ -76,6 +72,8 @@
 
   let emotionSchedule = [];
 
+  // --- Helper Functions ---
+
   // Displays the emotion and schedules answer options
   function displayEmotion(emotion) {
     console.log("test");
@@ -83,10 +81,9 @@
     if (CONFIG.emotionImageMap[emotion]) {
       currentEmotion = emotion;
       CONFIG.elements.faceImage.src = `${CONFIG.urls.qtBase}${CONFIG.emotionImageMap[currentEmotion]}`;
-      pauseAudio();
-
-      CONFIG.elements.audioAsk.currentTime = 0;
-      CONFIG.elements.audioAsk.play();
+      setTimeout(() => {
+        currentEmotion = null;
+      }, CONFIG.intervals.emotionDelay)
     }
   }
   
