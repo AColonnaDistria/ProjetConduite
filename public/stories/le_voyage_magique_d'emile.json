@@ -5,7 +5,7 @@
   "emotions": [
     {
       "time": 14.544,
-      "emotion": "neutre"
+      "emotion": "confusion"
     },
     {
       "time": 24.024,
@@ -21,7 +21,7 @@
     },
     {
       "time": 61.34400000000001,
-      "emotion": "confusion"
+      "emotion": "dégoût"
     },
     {
       "time": 73.12800000000001,
@@ -30,6 +30,10 @@
     {
       "time": 83.25600000000001,
       "emotion": "surprise"
+    },
+    {
+      "time": 98.32800000000002,
+      "emotion": "affection"
     }
   ]
 }

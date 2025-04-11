@@ -1,5 +1,5 @@
 {
-  "name": "Le Loup dans la Forêt",
+  "name": "Le loup dans la forêt",
   "audio_name": "audio/audio_story/le_loup_dans_la_foret_name.mp3",
   "audio": "audio/audio_story/le_loup_dans_la_foret.mp3",
   "emotions": [
@@ -24,39 +24,35 @@
       "emotion": "joie"
     },
     {
-      "time": 32.304,
-      "emotion": "confusion"
-    },
-    {
-      "time": 124.08,
-      "emotion": "peur"
-    },
-    {
-      "time": 146.688,
-      "emotion": "joie"
-    },
-    {
-      "time": 180.072,
-      "emotion": "joie"
-    },
-    {
-      "time": 191.448,
+      "time": 32.352000000000004,
       "emotion": "colère"
     },
     {
-      "time": 219.48000000000002,
-      "emotion": "tristesse"
+      "time": 146.736,
+      "emotion": "joie"
     },
     {
-      "time": 244.89600000000002,
-      "emotion": "peur"
-    },
-    {
-      "time": 251.01600000000002,
+      "time": 163.87199999999999,
       "emotion": "embarassement"
     },
     {
-      "time": 273.192,
+      "time": 180.11999999999998,
+      "emotion": "joie"
+    },
+    {
+      "time": 191.49599999999998,
+      "emotion": "colère"
+    },
+    {
+      "time": 219.552,
+      "emotion": "tristesse"
+    },
+    {
+      "time": 251.328,
+      "emotion": "embarassement"
+    },
+    {
+      "time": 273.504,
       "emotion": "joie"
     }
   ]
