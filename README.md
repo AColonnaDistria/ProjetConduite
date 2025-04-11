@@ -21,7 +21,7 @@ Pour accéder au site web, veuillez vous rendre à l'adresse suivante :
 Une fois sur la page, vous trouverez les éléments suivants :
 
 * **Visuel Principal :** Un visage de **QT ROBOT**.
-* **Sélection d'Histoires :** Quatre blocs distincts affichant les **titres des histoires** disponibles.
+* **Sélection d'Histoires :** Trois blocs distincts affichant les **titres des histoires** disponibles.
 
 ## Instructions d'Utilisation
 
