@@ -81,7 +81,7 @@
     if (CONFIG.emotionImageMap[emotion]) {
       currentEmotion = emotion;
       CONFIG.elements.faceImage.src = `${CONFIG.urls.qtBase}${CONFIG.emotionImageMap[currentEmotion]}`;
-      setTimeout(() => {
+      setTimeout(mm() => {
         currentEmotion = null;
       }, CONFIG.intervals.emotionDelay)
     }
