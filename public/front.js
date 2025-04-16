@@ -86,7 +86,48 @@
       }, CONFIG.intervals.emotionDelay)
     }
   }
-  
+
+  // Hides the answer options container.
+  function hideAnswerOptions() {
+    CONFIG.elements.sendContainer.style.display = "none";
+    CONFIG.elements.sendContainer.style.visibility = "hidden";
+  }
+
+  // Displays answer options and attaches event handlers.
+  function showAnswerOptions(options) {
+    CONFIG.elements.sendButtons.forEach((button, index) => {
+      const option = options[index];
+      if (!option) {
+        button.style.visibility = "hidden";
+      } else {
+        button.style.visibility = "visible";
+        button.textContent = option;
+        // Play the corresponding emotion audio on hover.
+        button.onmouseover = () => {
+          const audioAnswer = new Audio(`${CONFIG.urls.audioBase}${CONFIG.emotionAudioMap[option]}`);
+          audioAnswer.play();
+        };
+        // On click, play success or failure sound and resume the audio.
+        button.onclick = () => {
+          if (option === currentEmotion) {
+            const bravo = new Audio(`${CONFIG.urls.audioBase}bravo.opus`);
+            bravo.play();
+          } else {
+            const perdu = new Audio(`${CONFIG.urls.audioBase}perdu.opus`);
+            perdu.play();
+          }
+          setTimeout(() => {
+            currentEmotion = null;
+            hideAnswerOptions();
+            resumeAudio();
+          }, CONFIG.answer.resumeDelay);
+        };
+      }
+    });
+    CONFIG.elements.sendContainer.style.display = "flex";
+    CONFIG.elements.sendContainer.style.visibility = "visible";
+  }
+
   // Starts the clock and updates the face image based on the current state.
   function startClock() {
     setInterval(() => {

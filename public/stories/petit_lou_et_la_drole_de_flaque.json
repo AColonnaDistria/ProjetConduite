@@ -4,27 +4,27 @@
   "audio": "audio/audio_story/petit_lou_et_la_drole_de_flaque.mp3",
   "emotions": [
     {
-      "time": 17.856,
+      "time": 19.176,
       "emotion": "confusion"
     },
     {
-      "time": 26.616,
+      "time": 29.256,
       "emotion": "colère"
     },
     {
-      "time": 32.544,
+      "time": 35.184,
       "emotion": "peur"
     },
     {
-      "time": 45.504,
+      "time": 53.232,
       "emotion": "joie"
     },
     {
-      "time": 54.552,
+      "time": 62.28,
       "emotion": "tristesse"
     },
     {
-      "time": 74.112,
+      "time": 83.856,
       "emotion": "joie"
     }
   ]
